@@ -108,35 +108,36 @@ Informational BIP (Информационных), где версия 2 API мо
 
 Каждый BIP должен иметь следующие части:
 
-* Preamble(Введение) -- заголовки стилей RFC 822, содержащие метаданные о BIP, включая номер, краткое описательное название 
+* Preamble -- заголовки стилей RFC 822, содержащие метаданные о BIP, включая номер, краткое описательное название 
 (ограниченное 44 символами), имена и, при необходимости, контактную информацию каждого автора и т. д.
 
-* Abstract(Аннотация) -- краткое (~ 200 слов) описание рассматриваемой технической проблемы.
+* Abstract -- краткое (~ 200 слов) описание рассматриваемой технической проблемы.
 
-* Copyright/public domain (Авторское право/общественное достояние) -- Каждый BIP должен быть либо явно помечен как помещенный
+* Copyright/public domain -- Каждый BIP должен быть либо явно помечен как помещенный
 в общественное достояние (см. этот BIP, например), либо лицензирован в соответствии с  Open Publication License.
 
-* Specification -- The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations for any of the current Bitcoin platforms (Satoshi, BitcoinJ, bitcoin-js, libbitcoin).
+* Specification -- Техническая спецификация должна описывать синтаксис и семантику любой новой функции. Спецификация должна быть достаточно подробной, чтобы предоставить конкурентоспособную и совместимую реализацию для любой из существующих Bitcoin платформ (Satoshi, BitcoinJ, bitcoin-js, libbitcoin).
 
-* Motivation -- The motivation is critical for BIPs that want to change the Bitcoin protocol. It should clearly explain why the existing protocol specification is inadequate to address the problem that the BIP solves. BIP submissions without sufficient motivation may be rejected outright.
+* Motivation -- Мотивация имеет решающее значение для BIP, которые хотят изменить Bitcoin протокол. Она должна четко объяснять, почему существующая спецификация протокола не подходит для решения проблемы, которую решает BIP. Предложения BIP без достаточной мотивации могут быть отклонены.
 
-* Rationale -- The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work, e.g. how the feature is supported in other languages.
+* Rationale -- Обоснование объясняет спецификацию, описывая, чем была мотивирована разработка и почему принимались конкретные проектные решения. Оно должно описывать альтернативные проекты, которые были рассмотрены и связаны с работой; например, как эта функция поддерживается на других языках.
 
-* The rationale should provide evidence of consensus within the community and discuss important objections or concerns raised during discussion.
+* Обоснование должно предоставлять доказательство достигнутого в сообществе консенсуса и описывать важные возражения или проблемы, поднятые в ходе обсуждения.
 
-* Backwards Compatibility -- All BIPs that introduce backwards incompatibilities must include a section describing these incompatibilities and their severity. The BIP must explain how the author proposes to deal with these incompatibilities. BIP submissions without a sufficient backwards compatibility treatise may be rejected outright.
+* Backwards Compatibility -- Обратная совместимость, все BIP, которые вводят обратную несовместимость, должны включать раздел, описывающий эти несовместимости и их серьезность. BIP должен объяснить, как автор предлагает решить проблему этих несовместимостей. Предложения BIP без достаточного анализа обратной совместимости могут быть полностью отвергнуты.
 
-* Reference Implementation -- The reference implementation must be completed before any BIP is given status "Final", but it need not be completed before the BIP is accepted. It is better to finish the specification and rationale first and reach consensus on it before writing code.
+* Reference Implementation -- Справочная реализация должна быть завершена до того, как любой BIP получит статус «Final» (финальный), однако нет необходимости реализовывать ее до того, как BIP будет принят. Лучше сначала завершить спецификацию и обоснование и достичь консенсуса до написания кода.
 
-* The final implementation must include test code and documentation appropriate for the Bitcoin protocol.
+* Окончательная реализация должна включать тестовый код и документацию, соответствующие Bitcoin протоколу.
 
-==BIP Formats and Templates==
 
-BIPs should be written in mediawiki or markdown format.
+==Форматы и шаблоны BIP==
 
-===BIP Header Preamble===
+BIP должны быть записаны в формате mediawiki или markdown.
 
-Each BIP must begin with an RFC 822 style header preamble. The headers must appear in the following order. Headers marked with "*" are optional and are described below. All other headers are required.
+===Вводная часть заголовка BIP===
+
+Каждый BIP должен начинаться с вводной части заголовка RFC 822. Заголовки должны отображаться в следующем порядке. Заголовки с «*» являются необязательными и описаны ниже. Все остальные заголовки необходимы
 
 <pre>
   BIP: <BIP number>
@@ -153,76 +154,73 @@ Each BIP must begin with an RFC 822 style header preamble. The headers must appe
 * Resolution: <url>
 </pre>
 
-The Author header lists the names, and optionally the email addresses of all the authors/owners of the BIP. The format of the Author header value must be
+Заголовок автора содержит имена и, при необходимости, адреса электронной почты всех авторов/владельцев BIP. Формат значения заголовка автора должен быть таким:
 
   Random J. User <address@dom.ain>
 
-if the email address is included, and just
+если адрес электронной почты указан, и просто
 
   Random J. User
 
-if the address is not given.
+если адрес не указан.
 
-If there are multiple authors, each should be on a separate line following RFC 2822 continuation line conventions.
+Если есть несколько авторов, каждый из них должна быть упомянут отдельной строкой по правилам RFC 2822.
 
-Note: The Resolution header is required for Standards Track BIPs only. It contains a URL that should point to an email message or other web resource where the pronouncement about the BIP is made.
+Замечание: Заголовок "Resolution" (Разрешение) требуется только для BIP Standards Track. Он содержит URL-адрес, который должен указывать на сообщение электронной почты или другой веб-ресурс, где делается объявление о BIP.
 
-While a BIP is in private discussions (usually during the initial Draft phase), a Discussions-To header will indicate the mailing list or URL where the BIP is being discussed. No Discussions-To header is necessary if the BIP is being discussed privately with the author, or on the bitcoin email mailing lists.
+Пока BIP обсуждается в частных дискуссиях (обычно на этапе Черновик), в заголовке Discussionions-To (Обсуждения) указывается список рассылки или URL-адрес, где обсуждается BIP.  No Discussions-To (Обсуждение отсутствует) – этот заголовок необходим, если BIP обсуждается в частном порядке с автором или в Bitcoin рассылках по электронной почте.
 
-The Type header specifies the type of BIP: Standards Track, Informational, or Process.
+Заголовок Type (Тип) указывает на тип BIP: Стандартное отслеживание (Standards Track), Информационный (Informational) или Процессуальный (Process).
 
-The Created header records the date that the BIP was assigned a number, while Post-History is used to record the dates of when new versions of the BIP are posted to bitcoin mailing lists. Both headers should be in yyyy-mm-dd format, e.g. 2001-08-14.
+Заголовок Created (Создан) записывает дату, когда BIP был назначен номер, а Post-History (История постов) используется для записи дат, когда новые версии BIP появляются в Bitcoin рассылках. Оба заголовка должны быть в формате гггг-мм-дд, например, 2001-08-14.
 
-BIPs may have a Requires header, indicating the BIP numbers that this BIP depends on.
+BIP могут иметь заголовок Requires (Запросы), указывающий номера BIP, от которых зависит этот BIP.
 
-BIPs may also have a Superseded-By header indicating that a BIP has been rendered obsolete by a later document; the value is the number of the BIP that replaces the current document. The newer BIP must have a Replaces header containing the number of the BIP that it rendered obsolete.
+BIP могут также иметь заголовок «Superseded-By» (Заменено на), указывающий, что BIP был заменен более актуальным документом; значение - это номер BIP, который заменил документ. Актуальный BIP должен иметь заголовок «Replaces» (Замены), содержащий номер устаревшего BIP.
 
-===Auxiliary Files===
 
-BIPs may include auxiliary files such as diagrams. Image files should be included in a subdirectory for that BIP. Auxiliary files must be named BIP-XXXX-Y.ext, where "XXXX" is the BIP number, "Y" is a serial number (starting at 1), and "ext" is replaced by the actual file extension (e.g. "png").
+===Вспомогательные файлы===
 
-==Transferring BIP Ownership==
+BIP могут включать вспомогательные файлы, например, диаграммы. Файлы изображений должны быть включены в подкаталог для этого BIP. Вспомогательные файлы должны быть названы BIP-XXXX-Y.ext, где «XXXX» - номер BIP, «Y» - это серийный номер (начиная с 1), а «ext» заменяется фактическим расширением файла (например, «png»).
 
-It occasionally becomes necessary to transfer ownership of BIPs to a new champion. In general, we'd like to retain the original author as a co-author of the transferred BIP, but that's really up to the original author. A good reason to transfer ownership is because the original author no longer has the time or interest in updating it or following through with the BIP process, or has fallen off the face of the 'net (i.e. is unreachable or not responding to email). A bad reason to transfer ownership is because you don't agree with the direction of the BIP. We try to build consensus around a BIP, but if that's not possible, you can always submit a competing BIP.
+==Передача права собственности BIP==
 
-If you are interested in assuming ownership of a BIP, send a message asking to take over, addressed to both the original author and the BIP editor. If the original author doesn't respond to email in a timely manner, the BIP editor will make a unilateral decision (it's not like such decisions can't be reversed :).
+Иногда возникает необходимость передать право собственности на BIP новому автору. В общем, нам бы хотелось сохранить соавторство оригинального автора переданного BIP, но это все зависит от самого автора. Оправданной причиной для передачи права собственности является то, что у первоначального автора больше нет времени или ему больше неинтересно обновлять или в дальнейшем работать над BIP, а также если он "выпал" из сети (т.е. недоступен или не отвечает на электронную почту). Необходимая причина передачи права собственности - это то, что вы не согласны с направлением развития BIP. Мы пытаемся создать консенсус вокруг BIP, но если это невозможно, вы всегда можете представить конкурирующий BIP.
+Если вы заинтересованы в приобретении права собственности на BIP, отправьте сообщение с просьбой о передаче, адресованное как оригинальному автору, так и редактору BIP. Если автор не ответит на электронную почту своевременно, редактор BIP примет одностороннее решение.
 
-==BIP Editors==
+==Редакторы BIP==
 
-The current BIP editor is Luke Dashjr who can be contacted at [[mailto:luke_bipeditor@dashjr.org|luke_bipeditor@dashjr.org]].
+Текущий редактор BIP -Люк Дашир, с которым можно связаться по адресу [[mailto:luke_bipeditor@dashjr.org|luke_bipeditor@dashjr.org]].
 
-==BIP Editor Responsibilities & Workflow==
+==Ответственности и рабочий процесс редактора BI==
 
-The BIP editor subscribes to the Bitcoin development mailing list. All BIP-related correspondence should be sent (or CC'd) to luke_bipeditor@dashjr.org.
+Редактор BIP подписан на список рассылки Bitcoin. Вся корреспонденция, связанная с BIP, должна быть отправлена на luke_bipeditor@dashjr.org.
+Для каждого нового BIP, который появляется, редактор выполняет следующее:
 
-For each new BIP that comes in an editor does the following:
+* Читает BIP, чтобы проверить, готов ли он. Идеи должны иметь технический смысл, даже если они не будут приняты.
+Проверяет, что название точно описывает содержимое.
 
-* Read the BIP to check if it is ready: sound and complete. The ideas must make technical sense, even if they don't seem likely to be accepted.
-* The title should accurately describe the content.
-* Edit the BIP for language (spelling, grammar, sentence structure, etc.), markup (for reST BIPs), code style (examples should match BIP 8 & 7).
+* Редактирует BIP (орфография, грамматика, структура предложения и т. д.), Разметка (для репозиториев BST), стиль кода (примеры должны соответствовать BIP 8 и 7).
 
-If the BIP isn't ready, the editor will send it back to the author for revision, with specific instructions.
+Если BIP не готов, редактор отправляет его автору для пересмотра с указанием конкретных инструкций.
 
-Once the BIP is ready for the repository it should be submitted as a "pull request" to the [https://github.com/bitcoin/bips bitcoin/bips] repository on GitHub where it may get further feedback.
+После того, как BIP готов к помещению в репозиторий, он должен быть отправлен как «запрос на включение» в репозиторий bitcoin/bips где он может получить дополнительную обратную связь.
 
-The BIP editor will:
+Редактор BIP:
 
-* Assign a BIP number (almost always just the next available number, but sometimes it's a special/joke number, like 666 or 3141) in the pull request comments.
+* Назначает номер BIP (почти всегда следующий доступный номер, но иногда это специальный номер или шуточный, например, 666 или 3141) в комментариях запроса на добавление.
+* Объединяет запрос на добавление, когда автор готов (что дает немного времени для дальнейшей экспертной проверки).
+* Размещает BIP в README.mediawiki
+* Отправляет электронное письмо автору BIP со следующими шагами (сообщение в рассылку bitcoin-dev).
+* Редакторы BIP должны выполнять административные и редакционные обязанности. Редакторы BIP контролируют изменения и исправляют любые структурные, грамматические, орфографические ошибки или разметку.
 
-* Merge the pull request when the author is ready (allowing some time for further peer review).
+==История==
 
-* List the BIP in [[README.mediawiki]]
+Этот документ был составлен в значительной степени из PEP-0001 Python. Во многих местах текст был просто скопирован и изменен. Хотя текст PEP-0001 был написан Барри Варшавом, Джереми Хилтоном и Дэвидом Гудгером, они не несут ответственности за его использование в процессе улучшения Bitcoin и не должны беспокоиться о технических вопросах, специфичных для Bitcoin  или процесса BIP. Пожалуйста, направляйте все комментарии редакторам BIP или на рассылку разработки Bitcoin.
 
-* Send email back to the BIP author with next steps (post to bitcoin-dev mailing list).
+==Список изменений==
 
-The BIP editors are intended to fulfill administrative and editorial responsibilities. The BIP editors monitor BIP changes, and correct any structure, grammar, spelling, or markup mistakes we see.
+10 октября 2015 г. - Добавлены разъяснения относительно процесса подачи и присвоения номера BIP.
 
-==History==
+01 января 2016 г. - Уточнены ранние этапы разработки идеи BIP, сбор отзывов сообщества и т. д.
 
-This document was derived heavily from Python's PEP-0001. In many places text was simply copied and modified. Although the PEP-0001 text was written by Barry Warsaw, Jeremy Hylton, and David Goodger, they are not responsible for its use in the Bitcoin Improvement Process, and should not be bothered with technical questions specific to Bitcoin or the BIP process. Please direct all comments to the BIP editors or the Bitcoin development mailing list.
-
-==Changelog==
-
-10 Oct 2015 - Added clarifications about submission process and BIP number assignment.
-
-01 Jan 2016 - Clarified early stages of BIP idea championing, collecting community feedback, etc.
