@@ -58,7 +58,7 @@ BIP означает предложение по улучшению Bitcoin. BIP
 предложений.
 
 Редакторы BIP назначают номера BIP и меняют их статус. Пожалуйста, отправляйте все электронные письма, связанные с BIP, 
-[[#BIP_Editors|BIP Редакторам]]. Также см. [[#BIP_Editor_Responsibilities__Workflow|BIP Editor Responsibilities & Workflow]]. Редактор BIP оставляет за собой 
+[[#Редакторы BIP|BIP Редакторам]]. Также см. [[#BIP_Editor_Responsibilities__Workflow|BIP Editor Responsibilities & Workflow]]. Редактор BIP оставляет за собой 
 право отклонить предложения BIP, если они выглядят несконцентрированными на идее или слишком общими.
 
 Авторы НЕ ДОЛЖНЫ назначать номера BIP самостоятельно, но должны использовать название, например, «bip-johndoe-infinbitcoins», который включает имя/ник автора и тему BIP.
