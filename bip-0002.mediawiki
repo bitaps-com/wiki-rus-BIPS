@@ -387,6 +387,6 @@ BIP 1 разрешил Open Publication License (Открытую лицензи
 
 ==Смотрите также==
 
-* [[bip-0001.mediawiki|BIP 1: BIP Purpose and Guidelines]]
-* [[bip-0123.mediawiki|BIP 123: BIP Classification]]
+* [[https://github.com/bitcoin/bips/blob/master/bip-0001.mediawiki|BIP 1: BIP Purpose and Guidelines]]
+* [[https://github.com/bitcoin/bips/blob/master/bip-0123.mediawiki|BIP 123: BIP Classification]]
 * [https://tools.ietf.org/html/rfc7282 RFC 7282: On Consensus and Humming in the IETF]
