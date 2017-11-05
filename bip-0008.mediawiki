@@ -1,0 +1,268 @@
+<pre>
+  BIP: 8
+  Title: Version bits with lock-in by height
+  Author: Shaolin Fry <shaolinfry@protonmail.ch>
+  Translate: Aleksey Karpov <admin@bitaps.com>
+  Comments-Summary: No comments yet.
+  Comments-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0008
+  Status: Draft
+  Type: Informational
+  Created: 2017-02-01
+  License: BSD-3-Clause
+           CC0-1.0
+</pre>
+
+==Аннотация==
+
+В этом документе указано изменение в [[bip-0009.mediawiki|BIP9]], которое заменяет активацию по времени на высоту блока, 
+а также гарантированную активацию обратносовместимых изменений (далее называемых софтфорками).
+Ключевые слова «ОБЯЗАН», «НЕЛЬЗЯ», «ТРЕБУЕТСЯ», «МОЖЕТ», «НЕ ДОЛЖЕН», «СЛЕДУЕТ», «НЕ СЛЕДУЕТ», «РЕКОМЕНДУЕТСЯ», «МОЖНО» и
+«ДОПОЛНИТЕЛЬНО» в этом документе для интерпретации, как описано в RFC 2119.
+
+==Мотивация==
+
+BIP9 представил механизм для развертывания параллельных софтфорков, основанных на сигнализировании в поле блока nVersion. 
+Активация зависит от почти единогласного сигнализирования хэшрейтом, которое может быть непрактичным и приводить к вето с
+помощью небольшого количества участников несигнальизирующих своим хэшрейтом. Триггеры активации на основе хэшрейта абсолютного
+большинства позволяют делать ускоренную активацию, когда основная хэш-мощность обеспечивает новые правила вместо полного
+обновления узлов. Так как все консенсусные правила в  итоге применяются всеми узлами, в конечном итоге любой новый софтфорк 
+будет применяться экономикой. Это предложение объединяет эти два аспекта, чтобы обеспечить возможную активацию 
+через разумное время(рекомендуется год) после обозначенного дня, а также для ускоренной активации хэшрейтом большинства
+до указанной даты.
+
+Время блока величина плвающая и может быть преднамеренно или непреднамеренно неточным, поэтому пороговые значения, 
+основанные на интервале между блоками, не идеальные. Во-вторых, BIP9 указывает триггеры на основе первого перерасчета сложности 
+по истечении заданного времени, что неинтуитивно понятно. Поскольку каждый новый блок должен увеличивать высоту на
+единицу, пороговые значения, основанные на высоте блока, намного более надежны и интуитивно понятны и могут быть точно 
+рассчитаны при перенастройки сложности.
+
+==Спецификация==
+
+===Краткое описание===
+
+Эта спецификация такая же, как [[bip-0009.mediawiki|BIP9]] за исключением того, что порог времени, основанный на MTP, 
+заменяется высотой блока, а состояние машины не имеет состояния '''FAILED'''. Переход состояния из '''STARTED'''
+в '''LOCKED_IN''' произойдет в двух условиях:
+
+Первое условие - когда достигается порог сигналов в блоках блоках в соответствии с BIP9, до достижения состояния LOCKED_IN. 
+Второе условие - когда высота блока достигает высоты блока тайм-аута, все еще находясь в состоянии STARTED.
+
+
+===Параметры===
+
+Каждое развертывание софтфорка определяется следующими параметрами каждой цепочки (далее подробно описано ниже):
+
+1. Имя ('''Name''') указывает очень краткое описание софтфорка, подходящее для использования в качестве идентификатора. 
+Для развертываний, описанных в одном BIP, рекомендуется использовать имя «bipN», где N - соответствующий номер BIP.
+2. Бит ('''Bit''') определяет, какой бит в поле nVersion блока должен использоваться для сигнализации блокировки и активации 
+софтфорка. Он выбирается из множества {0,1,2, ..., 28}.
+3. Начальная высота блока ('''startheight''') указывает минимальную высоту, на которой бит в блоке получает свое значение.
+4. Высота тайм-аута ('''timeoutheight''') указывает высоту блока, при которой развертывание должно блокироваться, если оно 
+еще не заблокировано или не активировано.
+
+===Рекомендации по выбору===
+
+Для выбора этих параметров для софтфорка предлагаются следующие рекомендации:
+
+1.  '''Name''' должно быть выбрано таким образом, чтобы никакие два софтфорка, одновременно или как-то иначе, никогда 
+не использовали одно и то же имя.
+2. '''Bit''' должен быть выбран таким образом, чтобы никакие два параллельных софтфорка не использовали один и тот же бит.
+3. '''Startheight''' (начальная высота) должна быть установлена на некоторую высоту блока в будущем, приблизительно 30 дней 
+(или 4320 блоков) после даты выпуска программного обеспечения, включая софтфорк. Это  дает определенную задержку, 
+предотвращающую запуск  для предварительных релизов. Для простоты начальная высота должна быть высотой блока в котром
+произойдет перерасчет сложности.
+4. '''timeoutheight''' должна быть равна 1 году, или 52416 блоков (26 интервалов перерасчета сложности) после начальной высоты.
+
+Более поздние развертывания с использованием одного и того же бита возможно в тех случаях, когда '''startheight''' находиться 
+после предыдущего '''timeoutheight''' или активации, но оно не рекомендуется до тех пор, пока оно не станет необходимым,
+и даже тогда рекомендуется установить паузу между этими процессами для обнаружения багов в программном обеспечении.
+
+The following guidelines are suggested for selecting these parameters for a soft fork:
+
+===Состояния===
+
+С каждым блоком и софтфорком мы связываем состояние развертывания.
+Возможные состояния:
+
+1. '''DEFINED''' - это первое состояние, в котором начинется каждый софтфорк. Генезис блок находится в этом состоянии по 
+определению для каждого развертывания.
+2. '''STARTED''' для блоков, прошедших начальный startheight.
+3. '''LOCKED_IN''' для одного периода между перерасчетом сложности, после первого периода перерасчета с блоками STARTED, 
+у которых достигнут необходимый порог с соответствующим битом, установленным в nVersion.
+4. '''ACTIVE''' для всех блоков после периода LOCKED_IN.
+5. '''FAILED''', если высота блока больше или равна timeoutheight во время состояния DEFINED.
+
+
+===Битовые флаги===
+
+Поле заголовка блока, поле nVersion должно интерпретироваться как 32 битовое целое число с little-endian порядком байтов 
+(как представлено), биты выбираются внутри этого целого в качестве значений  (1 << N) , где N - это число бит.
+
+Блоки в состоянии STARTED получают в nVersion, бит битовой позиции которого равен 1. Первые 3 бита таких блоков должны 
+быть 001, поэтому диапазон реально возможных значений nVersion равен [0x20000000...0x3FFFFFFF] включительно.
+
+Из-за ограничений, установленных BIP 34, BIP 66 и BIP 65, мы имеем только 0x7FFFFFFB возможных значений nVersion. Это 
+ограничивает нас не более чем 30 независимыми развертываниями. Ограничивая первые 3 бита до 001, мы получаем 29 из них 
+для целей этого предложения и поддерживаем два будущих обновления для разных механизмов (первые биты 010 и 011). 
+Когда в блок знчение nVersion не имеет первых бит равных 001, он обрабатывается так, как будто все биты для целей развертывания
+равны 0.
+
+Майнерам следует продолжить сигнализировать биты в фазе LOCKED_IN, хотя это не влияет на правила консенсуса.
+
+
+===Новые правила консенсуса===
+
+Новые правила консенсуса для каждого софтфорка действуют для каждого блока, имеющего статус ACTIVE.
+
+===Переход состояний===
+
+<img src="bip-0008/states.png" align="middle"></img>
+
+Генезис блок имеет состояние DEFINED для каждого развертывания, по определению.
+
+    State GetStateForBlock(block) {
+        if (block.height == 0) {
+            return DEFINED;
+        }
+
+Все блоки в периоде за котрый делается перерачет сложности имеют одинаковое состояние. Это означает, что если
+floor (block 1.height / 2016) = floor (block 2.height / 2016), они гарантированно имеют одинаковое состояние 
+для каждого развертывания.
+
+        if ((block.height % 2016) != 0) {
+            return GetStateForBlock(block.parent);
+        }
+
+В противном случае следующее состояние зависит от предыдущего состояния:
+
+    switch (GetStateForBlock(GetAncestorAtHeight(block, block.height - 2016))) {
+
+Мы остаемся в исходном состоянии до тех пор, пока мы не пройдем высоту начального блока или высоту тайм-аута.
+
+        case DEFINED:
+            if (block.height >= timeoutheight) {
+                return FAILED;
+            }
+            if (block.height >= startheight) {
+                return STARTED;
+            }
+            return DEFINED;
+
+После периода в состоянии STARTED, если наступает таймаут то мы переходим к LOCKED_IN. Если нет, 
+подсчитываются усатновелнные биты в блоках за данный перод и происходит переключение в LOCKED_IN,
+если достаточное количество блоков за прошедший период установили бит развертывания в их номерах версий. 
+Порог ≥1916 блоков (95% от 2016) или ≥1512 для тестовой сети (75% от 2016 года).
+В одном бите могут быть два непересекающихся развертывания, где первый переходит в LOCKED_IN, а другой одновременно
+переходит к STARTED, что означает, что оба потребуют установки бит.
+
+Обратите внимание, что состояние блока никогда не зависит от его собственной nVersion; только от его предшественников.
+After a period in the STARTED state, if we're past the timeout, we switch to LOCKED_IN. If not, we tally the bits set,
+and transition to LOCKED_IN if a sufficient number of blocks in the past period set the deployment bit in their
+version numbers. The threshold is ≥1916 blocks (95% of 2016), or ≥1512 for testnet (75% of 2016).
+
+        case STARTED:
+            if (block.height >= timeoutheight)
+                return LOCKED_IN;
+
+            int count = 0;
+            walk = block;
+            for (i = 0; i < 2016; i++) {
+                walk = walk.parent;
+                if (walk.nVersion & 0xE0000000 == 0x20000000 && (walk.nVersion >> bit) & 1 == 1) {
+                    count++;
+                }
+            }
+            if (count >= threshold) {
+                return LOCKED_IN;
+            }
+            return STARTED;
+
+После периода LOCKED_IN мы автоматически переходим к ACTIVE.
+
+        case LOCKED_IN:
+            return ACTIVE;
+
+А ACTIVE - это состояние, в котором развертывание остается всегда.
+
+        case ACTIVE:
+            return ACTIVE;
+    }
+
+
+'''Реализация'''
+Следует отметить, что состояния поддерживаются вдоль ветвей цепочки блоков, но может потребоваться перерасчет 
+при реорганизации.
+
+Учитывая, что состояние конкретной комбинации блоков/развертываний полностью определяется его происхождением 
+до текущего периода перерасчета (т.е. до и включая его предшественника с высотой block.height - 1 -
+(block.height % 2016)), является возможным рализовать механизм описанный выше эффективным и безопасным, используя кеширование
+результатов состояния каждых 2016 блоков, проиндексированных по их родительскому блоку.
+
+===Механизм предупреждения===
+
+Для предупреждений об обновлении отслеживается дополнительное «неизвестное обновление» с использованием маски «неявного бита»
+mask = (block.nVersion & ~expectedVersion) != 0. Маска будет не равна нулю, когда в nVersion устанавливается 
+неизвестный бит. В случае если наступает состояние LOCKED_IN для неизвестного обновления, программное обеспечение должно
+явно предупреждать о предстоящем софтфорке. При переходе в состояние  ACTIVE для неизвестног обновления, предупреждение 
+должны быть еще более явными.
+Оно должно предупреждать еще
+более явно громче после следующего периода перенастройки (когда неизвестное
+обновление находится в состоянии ACTIVE).
+
+===Изменения в getblocktemplate===
+
+Объект запроса шаблона расширен для включения нового элемента:
+
+{| class="wikitable"
+!colspan=4| template request
+|-
+! Key !! Required !! Type !! Description
+|-
+| rules || No || Array of Strings || list of supported softfork deployments, by name
+|}
+
+The template Object is also extended:
+
+{| class="wikitable"
+!colspan=4| template
+|-
+! Key !! Required !! Type !! Description
+|-
+| rules || Yes || Array of Strings || list of softfork deployments, by name, that are active state
+|-
+| vbavailable || Yes || Object || set of pending, supported softfork deployments; each uses the softfork name as the key, and the softfork bit as its value
+|-
+| vbrequired || No || Number || bit mask of softfork deployment version bits the server requires enabled in submissions
+|}
+
+The "version" key of the template is retained, and used to indicate the server's preference of deployments.
+If versionbits is being used, "version" MUST be within the versionbits range of [0x20000000...0x3FFFFFFF].
+Miners MAY clear or set bits in the block version WITHOUT any special "mutable" key, provided they are listed among the template's "vbavailable" and (when clearing is desired) NOT included as a bit in "vbrequired".
+
+Softfork deployment names listed in "rules" or as keys in "vbavailable" may be prefixed by a '!' character.
+Without this prefix, GBT clients may assume the rule will not impact usage of the template as-is; typical examples of this would be when previously valid transactions cease to be valid, such as BIPs 16, 65, 66, 68, 112, and 113.
+If a client does not understand a rule without the prefix, it may use it unmodified for mining.
+On the other hand, when this prefix is used, it indicates a more subtle change to the block structure or generation transaction; examples of this would be BIP 34 (because it modifies coinbase construction) and 141 (since it modifies the txid hashing and adds a commitment to the generation transaction).
+A client that does not understand a rule prefixed by '!' must not attempt to process the template, and must not attempt to use it for mining even unmodified.
+
+=== Reference implementation ===
+
+https://github.com/bitcoin/bitcoin/compare/master...shaolinfry:bip8-height
+
+==Backwards compatibility==
+
+BIP8 and BIP9 deployments should not share concurrent active deployment bits. Nodes that only implement BIP9 will not activate a BIP8 soft fork if hashpower threshold is not reached by '''timeout''', however, those nodes will still accept the blocks generated by activated nodes.
+
+==Deployments==
+
+A living list of deployment proposals can be found [[bip-0008/assignments.mediawiki|here]].
+
+==References==
+
+[[bip-0009.mediawiki|BIP9]]
+
+[https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2017-February/013643.html Mailing list discussion]
+
+==Copyright==
+
+This document is dual licensed as BSD 3-clause, and Creative Commons CC0 1.0 Universal.
