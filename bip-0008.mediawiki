@@ -252,12 +252,12 @@ https://github.com/bitcoin/bitcoin/compare/master...shaolinfry:bip8-height
 
 Актуальный список предложений по развертыванию можно найти здесь. [[bip-0008/assignments.mediawiki|here]].
 
-==Авторские==
+==Ссылки==
 
 [[bip-0009.mediawiki|BIP9]]
 
 [https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2017-February/013643.html Mailing list discussion]
 
-==Copyright==
+==Авторские права==
 
 Этот документ имеет двойную лицензию как предложение BSD 3 и Creative Commons CC0 1.0 Universal.
