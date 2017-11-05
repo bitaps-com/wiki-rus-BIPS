@@ -125,7 +125,7 @@ The following guidelines are suggested for selecting these parameters for a soft
             return DEFINED;
         }
 
-Все блоки в периоде за котрый делается перерачет сложности имеют одинаковое состояние. Это означает, что если
+Все блоки в периоде за котрый делается перерасчет сложности имеют одинаковое состояние. Это означает, что если
 floor (block 1.height / 2016) = floor (block 2.height / 2016), они гарантированно имеют одинаковое состояние 
 для каждого развертывания.
 
@@ -151,14 +151,12 @@ floor (block 1.height / 2016) = floor (block 2.height / 2016), они гаран
 После периода в состоянии STARTED, если наступает таймаут то мы переходим к LOCKED_IN. Если нет, 
 подсчитываются усатновелнные биты в блоках за данный перод и происходит переключение в LOCKED_IN,
 если достаточное количество блоков за прошедший период установили бит развертывания в их номерах версий. 
-Порог ≥1916 блоков (95% от 2016) или ≥1512 для тестовой сети (75% от 2016 года).
+Порог ≥1916 блоков (95% из 2016) или ≥1512 для тестовой сети (75% из 2016).
 В одном бите могут быть два непересекающихся развертывания, где первый переходит в LOCKED_IN, а другой одновременно
 переходит к STARTED, что означает, что оба потребуют установки бит.
 
 Обратите внимание, что состояние блока никогда не зависит от его собственной nVersion; только от его предшественников.
-After a period in the STARTED state, if we're past the timeout, we switch to LOCKED_IN. If not, we tally the bits set,
-and transition to LOCKED_IN if a sufficient number of blocks in the past period set the deployment bit in their
-version numbers. The threshold is ≥1916 blocks (95% of 2016), or ≥1512 for testnet (75% of 2016).
+
 
         case STARTED:
             if (block.height >= timeoutheight)
@@ -250,7 +248,7 @@ https://github.com/bitcoin/bitcoin/compare/master...shaolinfry:bip8-height
 
 ==Развертывания==
 
-Актуальный список предложений по развертыванию можно найти здесь. [[bip-0008/assignments.mediawiki|here]].
+Актуальный список предложений по развертыванию можно найти  [[bip-0008/assignments.mediawiki|здесь]].
 
 ==Ссылки==
 
